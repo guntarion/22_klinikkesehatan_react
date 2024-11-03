@@ -1,13 +1,15 @@
+// src/pages/PatientList.tsx
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { UserPlus, Pencil, Trash2, Search } from 'lucide-react';
 import { usePatientStore } from '../stores/patient';
 import type { Patient } from '../types/patient';
 
-// Mock data
+// Mock data with patient IDs
 const mockPatients: Patient[] = [
   {
     id: '1',
+    patientId: '100001', // Added patient ID
     name: 'Budi Santoso',
     nik: '3274821006900001',
     dateOfBirth: '1990-06-10',
@@ -23,6 +25,7 @@ const mockPatients: Patient[] = [
   },
   {
     id: '2',
+    patientId: '100002', // Added patient ID
     name: 'Siti Rahayu',
     nik: '3274821007950002',
     dateOfBirth: '1995-07-15',
@@ -36,6 +39,7 @@ const mockPatients: Patient[] = [
   },
   {
     id: '3',
+    patientId: '100003', // Added patient ID
     name: 'Ahmad Yani',
     nik: '3274821008850003',
     dateOfBirth: '1985-08-20',
@@ -73,7 +77,8 @@ const PatientList = () => {
   const filteredPatients = patients.filter(
     (patient) =>
       patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      patient.nik.includes(searchTerm)
+      patient.nik.includes(searchTerm) ||
+      patient.patientId.includes(searchTerm) // Added search by patient ID
   );
 
   return (
@@ -97,7 +102,7 @@ const PatientList = () => {
         <input
           type='text'
           className='block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
-          placeholder='Cari pasien berdasarkan nama atau NIK...'
+          placeholder='Cari berdasarkan nama, NIK, atau nomor kartu pasien...'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -108,6 +113,9 @@ const PatientList = () => {
         <table className='min-w-full divide-y divide-gray-200'>
           <thead className='bg-gray-50'>
             <tr>
+              <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                Nomor Kartu
+              </th>
               <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
                 Nama / NIK
               </th>
@@ -125,6 +133,11 @@ const PatientList = () => {
           <tbody className='bg-white divide-y divide-gray-200'>
             {filteredPatients.map((patient) => (
               <tr key={patient.id}>
+                <td className='px-6 py-4 whitespace-nowrap'>
+                  <div className='text-sm font-mono font-medium text-gray-900'>
+                    {patient.patientId}
+                  </div>
+                </td>
                 <td className='px-6 py-4 whitespace-nowrap'>
                   <div className='text-sm font-medium text-gray-900'>
                     {patient.name}

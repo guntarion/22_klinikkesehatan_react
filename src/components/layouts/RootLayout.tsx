@@ -1,3 +1,4 @@
+// src/components/layouts/RootLayout.tsx
 import { FC, PropsWithChildren, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
