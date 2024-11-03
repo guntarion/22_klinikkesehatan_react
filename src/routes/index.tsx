@@ -1,3 +1,4 @@
+// src/routes/index.tsx
 import { Routes, Route } from 'react-router-dom';
 import Dashboard from '../pages/Dashboard';
 import PatientRegistration from '../pages/PatientRegistration';

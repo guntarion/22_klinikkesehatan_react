@@ -1,10 +1,10 @@
 // src/stores/patient.ts
 import { create } from 'zustand';
-import type { Patient } from '../types/patient';
+import type { Patient, CreatePatientDTO } from '../types/patient';
 
 interface PatientStore {
   patients: Patient[];
-  addPatient: (patient: Omit<Patient, 'patientId'>) => void;
+  addPatient: (patient: CreatePatientDTO) => Patient;
   updatePatient: (id: string, patient: Patient) => void;
   deletePatient: (id: string) => void;
   generatePatientId: () => string;
@@ -26,18 +26,21 @@ export const usePatientStore = create<PatientStore>((set, get) => ({
     return newId;
   },
 
-  addPatient: (patientData) => {
+  addPatient: (patientData: CreatePatientDTO) => {
     const patientId = get().generatePatientId();
-    const patient = {
+    const newPatient: Patient = {
       ...patientData,
+      id: crypto.randomUUID(),
       patientId,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     set((state) => ({
-      patients: [...state.patients, patient],
+      patients: [...state.patients, newPatient],
     }));
 
-    return patient;
+    return newPatient;
   },
 
   updatePatient: (id, updatedPatient) =>

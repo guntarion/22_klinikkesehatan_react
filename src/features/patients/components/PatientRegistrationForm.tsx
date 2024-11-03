@@ -30,18 +30,11 @@ const PatientRegistrationForm = () => {
   const onSubmit = async (data: CreatePatientDTO) => {
     try {
       setIsSubmitting(true);
-      // In a real app, you would make an API call here
-      const newPatient = {
-        ...data,
-        id: crypto.randomUUID(),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
+      const newPatient = addPatient(data);
 
-      const registeredPatient = addPatient(newPatient);
       setRegisteredPatient({
-        patientId: registeredPatient.patientId,
-        name: registeredPatient.name,
+        patientId: newPatient.patientId,
+        name: newPatient.name,
       });
     } catch (error) {
       alert('Terjadi kesalahan saat mendaftarkan pasien');

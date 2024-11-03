@@ -8,11 +8,16 @@
 ./features/patients
 ./features/patients/components
 ./features/patients/components/PatientRegistrationForm.tsx
+./features/.DS_Store
 ./features/appointments
+./features/appointments/.DS_Store
+./features/appointments/components
+./features/appointments/components/AppointmentForm.tsx
 ./features/auth
 ./features/medical-records
 ./App.css
 ./stores
+./stores/appointment.ts
 ./stores/patient.ts
 ./index.css
 ./folder_structure.txt
@@ -29,6 +34,7 @@
 ./assets
 ./assets/react.svg
 ./pages
+./pages/AppointmentList.tsx
 ./pages/Dashboard.tsx
 ./pages/PatientList.tsx
 ./pages/PatientRegistration.tsx

@@ -14,7 +14,7 @@ const AppointmentForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
     setValue,
   } = useForm<CreateAppointmentDTO>();
 

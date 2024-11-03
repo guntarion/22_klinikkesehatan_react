@@ -1,3 +1,4 @@
+// src/types/patient.ts
 export interface Patient {
   id: string;
   patientId: string; // Six digit patient ID for the card
