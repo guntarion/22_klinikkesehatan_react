@@ -60,8 +60,6 @@ const Dashboard = () => {
           className='bg-purple-100 text-purple-600'
         />
       </div>
-
-      {/* You can add more dashboard content here */}
     </div>
   );
 };
