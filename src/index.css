@@ -2,17 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-  }
-
-  body {
-    @apply bg-background text-foreground antialiased;
-  }
-}
-
 @layer components {
   .btn-primary {
     @apply px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 
