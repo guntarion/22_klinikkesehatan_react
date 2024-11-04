@@ -9,6 +9,7 @@ import {
   X,
   Home,
   Activity,
+  PackageOpen,
 } from 'lucide-react';
 
 const RootLayout: FC<PropsWithChildren> = ({ children }) => {
@@ -20,6 +21,7 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
     { name: 'Appointment', href: '/appointments', icon: Calendar },
     { name: 'Rekam Medis', href: '/medical-records', icon: FileText },
     { name: 'Pemeriksaan', href: '/checkups', icon: Activity },
+    { name: 'Suplai Medis', href: '/supplies', icon: PackageOpen },
   ];
 
   return (

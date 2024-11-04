@@ -3,7 +3,15 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePatientStore } from '../../../stores/patient';
 import { useCheckupStore } from '../../../stores/checkup';
+import { useMedicalSupplyStore } from '../../../stores/medical-supply';
 import type { DoctorType, CreateCheckupDTO } from '../../../types/checkup';
+// import type { MedicalSupply } from '../../../types/medical-supply';
+
+// Add this interface for selected supplies
+interface SelectedSupply {
+  supplyId: string;
+  quantity: number;
+}
 
 interface CheckupFormProps {
   patientId: string;
@@ -16,6 +24,15 @@ const CheckupForm = ({
   doctorType,
   onComplete,
 }: CheckupFormProps) => {
+  const [selectedSupplies, setSelectedSupplies] = useState<SelectedSupply[]>(
+    []
+  );
+  const [showSupplyModal, setShowSupplyModal] = useState(false);
+
+  // store selectors
+  const supplies = useMedicalSupplyStore((state) => state.supplies);
+  const recordUsage = useMedicalSupplyStore((state) => state.recordUsage);
+
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const addCheckup = useCheckupStore((state) => state.addCheckup);
@@ -51,7 +68,17 @@ const CheckupForm = ({
         ...formData,
       };
 
-      await addCheckup(checkupData);
+      const newCheckup = await addCheckup(checkupData);
+
+      // Record supply usage after checkup is created
+      for (const supply of selectedSupplies) {
+        await recordUsage({
+          supplyId: supply.supplyId,
+          checkupId: newCheckup.id,
+          quantity: supply.quantity,
+        });
+      }
+
       onComplete?.();
       navigate('/checkups');
     } catch (error) {
@@ -60,6 +87,17 @@ const CheckupForm = ({
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Add this handler for removing supplies
+  const handleRemoveSupply = (supplyId: string) => {
+    setSelectedSupplies((prev) => prev.filter((s) => s.supplyId !== supplyId));
+  };
+
+  // Add this handler for adding supplies
+  const handleAddSupply = (supplyId: string, quantity: number) => {
+    setSelectedSupplies((prev) => [...prev, { supplyId, quantity }]);
+    setShowSupplyModal(false);
   };
 
   // Quick selection buttons for common conditions
@@ -177,6 +215,58 @@ const CheckupForm = ({
             />
           </div>
 
+          {/* Supplies */}
+          <div className='mb-6'>
+            <div className='flex justify-between items-center mb-2'>
+              <label className='block text-sm font-medium text-gray-700'>
+                Penggunaan Suplai Medis
+              </label>
+              <button
+                type='button'
+                onClick={() => setShowSupplyModal(true)}
+                className='text-sm text-blue-600 hover:text-blue-700'
+              >
+                + Tambah Item
+              </button>
+            </div>
+
+            {selectedSupplies.length > 0 ? (
+              <div className='border rounded-md divide-y'>
+                {selectedSupplies.map((selected) => {
+                  const supply = supplies.find(
+                    (s) => s.id === selected.supplyId
+                  );
+                  return supply ? (
+                    <div
+                      key={supply.id}
+                      className='p-3 flex justify-between items-center'
+                    >
+                      <div>
+                        <div className='text-sm font-medium text-gray-900'>
+                          {supply.name}
+                        </div>
+                        <div className='text-sm text-gray-500'>
+                          {selected.quantity} {supply.unit}
+                        </div>
+                      </div>
+                      <button
+                        type='button'
+                        onClick={() => handleRemoveSupply(supply.id)}
+                        className='text-red-600 hover:text-red-700 text-sm'
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                  ) : null;
+                })}
+              </div>
+            ) : (
+              <div className='text-sm text-gray-500 text-center py-4 border rounded-md'>
+                Belum ada item yang ditambahkan
+              </div>
+            )}
+          </div>
+
           {/* Additional Notes */}
           <div className='mb-6'>
             <label className='block text-sm font-medium text-gray-700 mb-2'>
@@ -211,6 +301,59 @@ const CheckupForm = ({
           </div>
         </div>
       </form>
+
+      {/* Supply Modal component */}
+      {showSupplyModal && (
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
+          <div className='bg-white rounded-lg p-6 max-w-lg w-full max-h-[80vh] overflow-y-auto'>
+            <h3 className='text-lg font-medium text-gray-900 mb-4'>
+              Pilih Suplai Medis
+            </h3>
+
+            <div className='space-y-4'>
+              {supplies.map((supply) => (
+                <div key={supply.id} className='border rounded-md p-3'>
+                  <div className='flex justify-between items-start mb-2'>
+                    <div>
+                      <div className='text-sm font-medium text-gray-900'>
+                        {supply.name}
+                      </div>
+                      <div className='text-sm text-gray-500'>
+                        Stok: {supply.stock} {supply.unit}
+                      </div>
+                    </div>
+                    {supply.stock > 0 && (
+                      <input
+                        type='number'
+                        min='1'
+                        max={supply.stock}
+                        className='w-20 rounded-md border-gray-300'
+                        placeholder='Jumlah'
+                        onChange={(e) => {
+                          const quantity = parseInt(e.target.value);
+                          if (quantity > 0 && quantity <= supply.stock) {
+                            handleAddSupply(supply.id, quantity);
+                          }
+                        }}
+                      />
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className='mt-4 flex justify-end'>
+              <button
+                type='button'
+                onClick={() => setShowSupplyModal(false)}
+                className='px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50'
+              >
+                Tutup
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

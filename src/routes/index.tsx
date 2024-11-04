@@ -4,6 +4,8 @@ import Dashboard from '../pages/Dashboard';
 import PatientRegistration from '../pages/PatientRegistration';
 import PatientList from '../pages/PatientList';
 import Checkups from '../pages/Checkups';
+import Supplies from '../pages/Supplies';
+import ErrorBoundary from '../components/ErrorBoundary';
 import AppointmentList from '../pages/AppointmentList';
 import AppointmentForm from '../features/appointments/components/AppointmentForm';
 
@@ -17,6 +19,14 @@ const AppRoutes = () => {
       <Route path='/appointments/new' element={<AppointmentForm />} />
       <Route path='/medical-records' element={<div>Halaman Rekam Medis</div>} />
       <Route path='/checkups' element={<Checkups />} />
+      <Route
+        path='/supplies'
+        element={
+          <ErrorBoundary>
+            <Supplies />
+          </ErrorBoundary>
+        }
+      />
     </Routes>
   );
 };
