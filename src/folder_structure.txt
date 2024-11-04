@@ -3,6 +3,8 @@
 ./main.tsx
 ./types
 ./types/patient.ts
+./types/medical-supply.ts
+./types/checkup.ts
 ./.DS_Store
 ./features
 ./features/patients
@@ -14,11 +16,19 @@
 ./features/appointments/components
 ./features/appointments/components/AppointmentForm.tsx
 ./features/auth
+./features/checkups
+./features/checkups/components
+./features/checkups/components/CheckupForm.tsx
 ./features/medical-records
+./features/supplies
+./features/supplies/components
+./features/supplies/components/AddSupplyForm.tsx
 ./App.css
 ./stores
 ./stores/appointment.ts
 ./stores/patient.ts
+./stores/medical-supply.ts
+./stores/checkup.ts
 ./index.css
 ./folder_structure.txt
 ./components
@@ -26,6 +36,7 @@
 ./components/shared
 ./components/layouts
 ./components/layouts/RootLayout.tsx
+./components/ErrorBoundary.tsx
 ./vite-env.d.ts
 ./hooks
 ./lib
@@ -37,6 +48,8 @@
 ./pages/AppointmentList.tsx
 ./pages/Dashboard.tsx
 ./pages/PatientList.tsx
+./pages/Checkups.tsx
 ./pages/PatientRegistration.tsx
+./pages/Supplies.tsx
 ./routes
 ./routes/index.tsx

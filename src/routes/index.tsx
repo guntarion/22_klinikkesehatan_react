@@ -4,6 +4,7 @@ import Dashboard from '../pages/Dashboard';
 import PatientRegistration from '../pages/PatientRegistration';
 import PatientList from '../pages/PatientList';
 import Checkups from '../pages/Checkups';
+import MedicalRecords from '../pages/MedicalRecords';
 import Supplies from '../pages/Supplies';
 import ErrorBoundary from '../components/ErrorBoundary';
 import AppointmentList from '../pages/AppointmentList';
@@ -17,7 +18,6 @@ const AppRoutes = () => {
       <Route path='/patients/register' element={<PatientRegistration />} />
       <Route path='/appointments' element={<AppointmentList />} />
       <Route path='/appointments/new' element={<AppointmentForm />} />
-      <Route path='/medical-records' element={<div>Halaman Rekam Medis</div>} />
       <Route path='/checkups' element={<Checkups />} />
       <Route
         path='/supplies'
@@ -27,6 +27,7 @@ const AppRoutes = () => {
           </ErrorBoundary>
         }
       />
+      <Route path='/medical-records' element={<MedicalRecords />} />
     </Routes>
   );
 };
